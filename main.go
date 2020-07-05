@@ -27,14 +27,13 @@ func main() {
 func SetVolume(c *gin.Context){
 	volume := c.Param("vol")
 
-
 	cmd := fmt.Sprintf("amixer -q -M sset %s%", volume)
 
 	volCmd := exec.Command("Set Loudness", cmd)
-
+	fmt.Printf("LOG: Trying to set volume to %s%", volume)
 	err := volCmd.Run()
 	if err != nil{
-		c.JSON(http.StatusBadRequest, gin.H{"msg": "bad request, cmd did not exec"})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"msg": "exec successful"})
 	}
@@ -48,9 +47,9 @@ func PlayYoutubeVideo(c *gin.Context) {
 	vidCmd := exec.Command("Set Video", cmd)
 
 	err := vidCmd.Run()
-
+	fmt.Printf("LOG: Trying to play video at %s...", videoUrl)
 	if err != nil {
-		c.JSON(400, gin.H{"msg": "failure when selecting video"})
+		c.JSON(400, gin.H{"msg": err})
 	} else {
 		c.JSON(200, gin.H{"msg": "video loaded"})
 	}
