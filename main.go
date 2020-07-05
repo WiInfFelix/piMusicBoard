@@ -27,6 +27,7 @@ func main() {
 func SetVolume(c *gin.Context){
 	volume := c.Param("vol")
 
+
 	cmd := fmt.Sprintf("amixer -q -M sset %s%", volume)
 
 	volCmd := exec.Command("Set Loudness", cmd)
