@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <link rel="stylesheet" href="css/main.css">
+    <title>Pi Control</title>
 </head>
 <body>
 
@@ -17,37 +18,33 @@
     <h1>Pi control</h1>
 </div>
 
-<div class="container">
-    <form>
-        <div class="form-group">
-            <label for="exampleInputEmail1">Volume</label>
-            <input type="text" class="form-control" id="Loudness" aria-describedby="emailHelp"
-                   placeholder="Lautstärke als Zahl">
-            <small id="emailHelp" class="form-text text-muted">Als Zahl büdde</small>
-        </div>
-        <button onclick="setLoudness()" class="btn btn-primary">Lautstärke setzen</button>
-    </form>
+<div class="container justify-content-center">
+        <h3>Volume controls</h3>
+        <input type="range" min="1" max="100" value="50" class="slider" id="Loudness">
+        <br>
+        <button onclick="setLoudness();" class="btn btn-primary">Lautstärke setzen</button>
 </div>
-
-<div class="container">
+<hr>
+<div class="container justify-content-center">
+    <h3>Video control</h3>
     <form>
         <div class="form-group">
             <label for="exampleInputEmail1">Video Link</label>
             <input type="text" class="form-control" id="videoUrl" aria-describedby="videohelp"
-                   placeholder="Video Url">
-            <small id="emailHelp" class="form-text text-muted">Link</small>
+                   placeholder="Video URL">
         </div>
-        <button onclick="setLoudness()" class="btn btn-primary">Video abspielen</button>
     </form>
+    <button onclick="setVideo();" class="btn btn-primary">Video abspielen</button>
 </div>
+<hr>
 
 
 <script>
     function setLoudness() {
-        var vol = document.getElementById("Loudness").valueOf();
+        var vol = document.getElementById("Loudness").value;
         var xhttp = new XMLHttpRequest();
-
-        xhttp.open("POST", "192.168.1.112:8080/volume" + vol, true)
+        console.log("Pressed Loudness button for: " + vol)
+        xhttp.open("POST", "192.168.1.112:8080/volume/" + vol.valueOf(), true)
         xhttp.setRequestHeader("Content-type", "application/json")
         xhttp.send()
     }
@@ -55,14 +52,14 @@
 
 <script>
     function setVideo() {
-        var vid = document.getElementById("videoUrl").valueOf()
+        var vid = document.getElementById("videoUrl").value
 
         var xhttp = new XMLHttpRequest()
-        xhttp.open("POST", "192.168.1.112:8080/video" + vid, true)
+        console.log("Trying to play video at: " + vid)
+        xhttp.open("POST", "192.168.1.112:8080/video/" + vid, true)
         xhttp.setRequestHeader("Content-type", "application/json")
         xhttp.send()
     }
-
 </script>
 
 <!-- Optional JavaScript -->
