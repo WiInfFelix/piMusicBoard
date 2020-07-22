@@ -19,6 +19,7 @@ func main() {
 
 	r.POST("/volume/:vol", SetVolume)
 	r.POST("/video/:videoUrl", PlayYoutubeVideo)
+	r.POST("/stop", StopPlayback)
 
 	r.Run(":8080")
 }
@@ -46,6 +47,18 @@ func PlayYoutubeVideo(c *gin.Context) {
 
 	err := vidCmd.Run()
 	fmt.Printf("LOG: Trying to play video at %s...", videoUrl)
+	if err != nil {
+		c.JSON(400, gin.H{"msg": err})
+	} else {
+		c.JSON(200, gin.H{"msg": "video loaded"})
+	}
+}
+
+func StopPlayback(c *gin.Context) {
+	cmd := "kill -s STOP $(pidof mpv)"
+	stopCmd := exec.Command("Stop playback", cmd)
+
+	err := stopCmd.Run()
 	if err != nil {
 		c.JSON(400, gin.H{"msg": err})
 	} else {

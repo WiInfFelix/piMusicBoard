@@ -29,12 +29,12 @@
     <h3>Video control</h3>
     <form>
         <div class="form-group">
-            <label for="exampleInputEmail1">Video Link</label>
             <input type="text" class="form-control" id="videoUrl" aria-describedby="videohelp"
                    placeholder="Video URL">
         </div>
     </form>
     <button onclick="setVideo();" class="btn btn-primary">Video abspielen</button>
+    <button onclick="stopVideo();" class="btn btn-primary">Wiedergabe stoppen</button>
 </div>
 <hr>
 
@@ -44,7 +44,7 @@
         var vol = document.getElementById("Loudness").value;
         var xhttp = new XMLHttpRequest();
         console.log("Pressed Loudness button for: " + vol)
-        xhttp.open("POST", "192.168.1.112:8080/volume/" + vol.valueOf(), true)
+        xhttp.open("POST", "192.168.1.101:8080/volume/" + vol.valueOf(), true)
         xhttp.setRequestHeader("Content-type", "application/json")
         xhttp.send()
     }
@@ -56,9 +56,19 @@
 
         var xhttp = new XMLHttpRequest()
         console.log("Trying to play video at: " + vid)
-        xhttp.open("POST", "192.168.1.112:8080/video/" + vid, true)
+        xhttp.open("POST", "192.168.1.101:8080/video/" + vid, true)
         xhttp.setRequestHeader("Content-type", "application/json")
         xhttp.send()
+    }
+</script>
+
+<script>
+    function stopVideo() {
+        var xmlHttpRequest = new XMLHttpRequest()
+        console.log("Stopping playback")
+        xmlHttpRequest.open("POST","192.168.1.101:8080/stop", true)
+        xmlHttpRequest.setRequestHeader("Content-type", "application/json")
+        xmlHttpRequest.send()
     }
 </script>
 
